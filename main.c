@@ -5,9 +5,11 @@ int main(int argc, char* argv[]){
 	FILE *fp;
 	char line[MAX_LINE_LEN];
 	node **nList;
-	int len=10;
+	int *iNode;
+	int len=100000000;
 
 	nList = malloc(sizeof(node*)*len);
+	iNode = (int*)malloc(sizeof(int)*len);
 	int i;
 	for(i=0; i<len; i++){
 		nList[i] = (node*)malloc(sizeof(node));
@@ -21,9 +23,7 @@ int main(int argc, char* argv[]){
 
 	i = 0;
 	while(fgets(line, MAX_LINE_LEN, fp)){
-		nList[i] = readNode(line);
-		printf("id:%lu\n", nList[i]->id);
-		printf("lat:%.10f, lon:%.10f \n", nList[i]->lat, nList[i]->lon);
+		classifyLine(line, nList, i, iNode);
 		i++;
 	}
 	

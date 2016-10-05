@@ -3,6 +3,8 @@
 #include <string.h>
 
 #define MAX_LINE_LEN 79857
+#define NODE_MAX 23895681
+#define LINE_MAX 1417363
 
 typedef struct{
 	long id;
@@ -13,4 +15,4 @@ typedef struct{
 
 int findIndexOfChar(char* s, char c, int n);
 node* readNode(char *line);
-void classifyLine(char *line, node **nList, int i);
+void classifyLine(char *line, node **nList, int i, int* iNode);

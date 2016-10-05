@@ -23,7 +23,7 @@ node* readNode(char *line){
 		int start = findIndexOfChar(line, '|', 1) + 1;
 		int end = findIndexOfChar(line, '|', 2);
 		strncpy(id, line + start, end - start);
-		printf("%s\n", id);
+		printf("id: %d\n", atoi(id));
 		n->id = atoi(id);
 
 		char lat[20];
@@ -45,12 +45,13 @@ node* readNode(char *line){
 	return n;
 }
 
-void classifyLine(char *line, node **nList, int i){
+void classifyLine(char *line, node **nList, int i, int* iNode){
 
 	switch(line[0]){
 		case 'n':
+			printf("%c\n", line[0]);
 			nList[i] = readNode(line);
-			printf("This is a node!\n");
+			iNode[i] = nList[i]->id;
 			break;
 		case 'w':
 			printf("This is a way!\n");
