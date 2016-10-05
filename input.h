@@ -12,4 +12,5 @@ typedef struct{
 }node;
 
 int findIndexOfChar(char* s, char c, int n);
-node readNode(FILE* fp);
+node* readNode(char *line);
+void classifyLine(char *line, node **nList, int i);
