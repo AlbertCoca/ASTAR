@@ -15,4 +15,4 @@ typedef struct{
 
 int findIndexOfChar(char* s, char c, int n);
 node* readNode(char *line);
-void classifyLine(char *line, node **nList, int i, int* iNode);
+void classifyLine(char *line, node **nList, int *i, int* iNode);
