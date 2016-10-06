@@ -2,8 +2,14 @@
 
 int cmpfunc(const void *n1, const void *n2)
 {
+	printf("hola\n");
+	printf("ptr n1: %p\n", n1);
+	printf("ptr n2: %p\n", n2);
 	const node *nn1 = (node*)n1; 
 	const node *nn2 = (node*)n2;
+	printf("%lu\n", nn1->id);
+	printf("%lu\n", nn2->id);
+	printf("\n");
 	return nn1->id - nn2->id; 
 } 
 
@@ -34,10 +40,12 @@ int main(int argc, char* argv[]){
 		//printf("id: %d\n", iNode[index-1]);
 	}
 	node *nFound;
-
-	printf("Initial Node: %lu\n", nFound->id);
-	nFound = (node*) bsearch (&nList[2], nList, index, sizeof (node), cmpfunc);
-	printf("Found Node: %lu\n", nFound->id);
+	printf("Initial Node: %lu\n", nList[2]->id);
+	printf("Initial Node ptr: %p\n", nList);
+	nFound = bsearch (nList[2], nList, index, sizeof(node*), cmpfunc);
+	printf("%lu\n", (long)nList[2]);
+	if(nFound != NULL)
+		printf("Found Node: %f\n", nFound->lat);
 
 	fclose(fp);
 

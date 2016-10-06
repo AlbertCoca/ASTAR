@@ -53,10 +53,10 @@ void classifyLine(char *line, node **nList, int *i, int* iNode){
 			*i+=1;
 			break;
 		case 'w':
-			printf("This is a way!\n");
+			//printf("This is a way!\n");
 			break;
 		default:
-			printf("Ignoring line...\n");
+			//printf("Ignoring line...\n");
 			break;
 	}
 }
