@@ -8,11 +8,16 @@
 
 typedef struct{
 	long id;
+	long realId;
 	char *name;
 	double lon;
 	double lat;
+	long neighbors[10];
+	long tn;
 }node;
 
 int findIndexOfChar(char* s, char c, int n);
 node* readNode(char *line);
 void classifyLine(char *line, node **nList, int *i, int* iNode);
+int bs(node **nList, int fItem, int len);
+void readWay(char *line, node **nList, int n);

@@ -1,3 +1,4 @@
  #include "input.h"
 
-int cmpfunc(const void *n1, const void *n2);
+int findIndexOfChar(char* s, char c, int n);
+int bs(node **nList, int fItem, int len);

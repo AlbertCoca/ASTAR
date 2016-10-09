@@ -1,25 +1,14 @@
 #include "common.h"
 
-int cmpfunc(const void *n1, const void *n2)
-{
-	printf("hola\n");
-	printf("ptr n1: %p\n", n1);
-	printf("ptr n2: %p\n", n2);
-	const node *nn1 = (node*)n1; 
-	const node *nn2 = (node*)n2;
-	printf("%lu\n", nn1->id);
-	printf("%lu\n", nn2->id);
-	printf("\n");
-	return nn1->id - nn2->id; 
-} 
-
 int main(int argc, char* argv[]){
+	printf("Initializing Vars...\n");
 	FILE *fp;
 	char line[MAX_LINE_LEN];
 	node **nList;
 	int *iNode;
-	int len=100000000;
+	int len=3895681;
 
+	printf("Allocating Memory...\n");
 	nList = malloc(sizeof(node*)*len);
 	iNode = (int*)malloc(sizeof(int)*len);
 	int i;
@@ -27,25 +16,37 @@ int main(int argc, char* argv[]){
 		nList[i] = (node*)malloc(sizeof(node));
 	}
 
+	printf("Opening File...\n");
 	fp = fopen("cataluna.csv", "r");
 	if(fp == NULL){
 		printf("ERROR File do not exist!\n");
 		abort();
 	}
 
+	printf("Loading File...\n");
+
 	int index = 0;
 	while(fgets(line, MAX_LINE_LEN, fp)){
 		classifyLine(line, nList, &index, iNode);
-		//printf("%d\n", index);
-		//printf("id: %d\n", iNode[index-1]);
 	}
+
+	printf("Testing...\n");
+	char way[] = "way|32020614|||residential|||||359178404|359178420|359178417|359178402|359178415|359178413|359178397|359178411|359178408|359178406|359178399|359178404";
+	printf("%s\n", way);
+	readWay(way, nList, index);
+	
 	node *nFound;
-	printf("Initial Node: %lu\n", nList[2]->id);
-	printf("Initial Node ptr: %p\n", nList);
-	nFound = bsearch (nList[2], nList, index, sizeof(node*), cmpfunc);
-	printf("%lu\n", (long)nList[2]);
+	int indexFound = 0;
+	printf("Initial Node: %lu\n", nList[2]->realId);
+	indexFound = bs(nList, nList[2]->realId, index);
+	nFound = nList[indexFound];
 	if(nFound != NULL)
-		printf("Found Node: %f\n", nFound->lat);
+		printf("Found Node: %lu\n", nFound->realId);
+
+	printf("index: %d\n",findIndexOfChar("hola", 'c', 1));
+
+	for(i=0;i<nList[0]->tn; i++)printf("%lu, ",nList[0]->neighbors[i]);
+	printf("\n");
 
 	fclose(fp);
 

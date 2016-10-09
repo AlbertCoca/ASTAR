@@ -1,12 +1,11 @@
 astar : main.o input.o
-	gcc -o astar main.o input.o
+	gcc -o astar main.o input.o common.o -g
 
-common.o: common.c common.h
-	gcc -c common.c
-main.o: main.c input.h
-	gcc -c main.c
-stack.o: input.c input.h
-	gcc -c input.c
+main.o: main.c
+	gcc -c main.c -g 
+input.o: input.c
+	gcc -c input.c -g
+	gcc -c common.c -g
 
 clean:
 	rm *.o
