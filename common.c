@@ -10,7 +10,7 @@ int findIndexOfChar(char* s, char c, int n){
 	return offset;
 }
 
-int bs(node **nList, int fItem, int len){
+long bs(node **nList, int fItem, int len){
 	int low = 0;
 	int high = len;
 	int i = len/2;
@@ -20,7 +20,9 @@ int bs(node **nList, int fItem, int len){
 		else high = i - 1;
 		i = (low+high) / 2;
 	}
-	if(low > high) return -1;
+	if(low > high){
+		return -1;
+	}
 	return nList[i]->id;
 	
 }

@@ -50,7 +50,6 @@ node* readNode(char *line){
 		end = strlen(line);
 		strncpy(lon, line + start, end - start);
 		n->lon = strtod(lon, NULL);
-
 		n->tn = 0;
 	}
 
@@ -63,27 +62,36 @@ node* readNode(char *line){
 void readWay(char *line, node **nList, int n){
 	int i = 9;
 	int start=0, end=0;
-	char id[10] = {'\0'};
-	char oneWay[6] = {'\0'};
+	char id[10];
+	char oneWay[6];
+	memset( id, '\0', sizeof(char)*10 );
+	memset( oneWay, '\0', sizeof(char)*6 );
 	int ow = 0;
-	int node1, node2;
+	long node1, node2;
 	start = findIndexOfChar(line, '|', i) + 1;
 	end = findIndexOfChar(line, '|', i+1);
 	strncpy(id, line + start, end - start);
 	node1 = bs(nList, atoi(id), n);
+	i++;
 
 	start = findIndexOfChar(line, '|', 7) + 1;
 	end = findIndexOfChar(line, '|', 8);
 	strncpy(oneWay, line + start, end - start);
+	printf("%s\n", oneWay);
+	printf("oneway?: %d\n", strcmp("oneway", oneWay));
 	if(strcmp("oneway", oneWay)==0) ow = 1;
 
 	while(findIndexOfChar(line, '|', i+1) > 0){
+		memset( id, '\0', sizeof(char)*10 );
 		start = findIndexOfChar(line, '|', i) + 1;
 		end = findIndexOfChar(line, '|', i+1);
 		strncpy(id, line + start, end - start);
-		node2 = bs(nList, atoi(id), n);
-		if(node2 != -1){
-			if(ow){
+		node2 = bs(nList, atol(id), n);
+		printf("node1: %li\n", node1);
+		printf("node2: %li\n", node2);
+		if(node2 >= 0 ){
+			if(ow==1){
+				printf("oneway!!!\n");
 				nList[node1]->neighbors[nList[node1]->tn] = node2;
 				nList[node1]->tn+=1;
 			}
@@ -97,18 +105,22 @@ void readWay(char *line, node **nList, int n){
 		}
 		i++;
 	}
-	//printf("Finding\n");
 	start = findIndexOfChar(line, '|', i) + 1;
 	end = findIndexOfChar(line, '\0', 1);
-	//printf("Copying\n");
 	strncpy(id, line + start, end - start);
-	//printf("Searching\n");
 	node2 = bs(nList, atoi(id), n);
 	if(node2 != -1){
-		nList[node1]->neighbors[nList[node1]->tn] = node2;
-		nList[node2]->neighbors[nList[node2]->tn] = node1;
-		nList[node1]->tn+=1;
-		nList[node2]->tn+=1;
+		if(ow==1){
+				printf("oneway!!!\n");
+				nList[node1]->neighbors[nList[node1]->tn] = node2;
+				nList[node1]->tn+=1;
+			}
+			else{
+				nList[node1]->neighbors[nList[node1]->tn] = node2;
+				nList[node2]->neighbors[nList[node2]->tn] = node1;
+				nList[node1]->tn+=1;
+				nList[node2]->tn+=1;
+			}
 	}
 }
 
@@ -123,7 +135,7 @@ void classifyLine(char *line, node **nList, int *i){
 			break;
 		case 'w':
 			//printf("Loading way:\n");
-			readWay(line, nList, *i);
+			//readWay(line, nList, *i);
 			break;
 		default:
 			//printf("Ignoring line...\n");
