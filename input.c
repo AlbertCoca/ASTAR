@@ -77,8 +77,8 @@ void readWay(char *line, node **nList, int n){
 	start = findIndexOfChar(line, '|', 7) + 1;
 	end = findIndexOfChar(line, '|', 8);
 	strncpy(oneWay, line + start, end - start);
-	printf("%s\n", oneWay);
-	printf("oneway?: %d\n", strcmp("oneway", oneWay));
+	//printf("%s\n", oneWay);
+	//printf("oneway?: %d\n", strcmp("oneway", oneWay));
 	if(strcmp("oneway", oneWay)==0) ow = 1;
 
 	while(findIndexOfChar(line, '|', i+1) > 0){
@@ -87,11 +87,11 @@ void readWay(char *line, node **nList, int n){
 		end = findIndexOfChar(line, '|', i+1);
 		strncpy(id, line + start, end - start);
 		node2 = bs(nList, atol(id), n);
-		printf("node1: %li\n", node1);
-		printf("node2: %li\n", node2);
+		//printf("node1: %li\n", node1);
+		//printf("node2: %li\n", node2);
 		if(node2 >= 0 ){
 			if(ow==1){
-				printf("oneway!!!\n");
+				//printf("oneway!!!\n");
 				nList[node1]->neighbors[nList[node1]->tn] = node2;
 				nList[node1]->tn+=1;
 			}
@@ -135,10 +135,14 @@ void classifyLine(char *line, node **nList, int *i){
 			break;
 		case 'w':
 			//printf("Loading way:\n");
-			//readWay(line, nList, *i);
+			readWay(line, nList, *i);
 			break;
 		default:
 			//printf("Ignoring line...\n");
 			break;
 	}
+}
+
+void nodeInitialize(node *n){
+	n = (node*)malloc(sizeof(node));
 }

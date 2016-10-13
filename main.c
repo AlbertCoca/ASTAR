@@ -1,4 +1,5 @@
 #include "common.h"
+#include <time.h>
 
 int main(int argc, char* argv[]){
 	printf("Initializing Vars...\n");
@@ -10,10 +11,14 @@ int main(int argc, char* argv[]){
 	int i;
 
 	for(i=0; i<len; i++){
-		nList[i] = (node*)malloc(sizeof(node));
+		nodeInitialize(nList[i]);
 	}
 
+	clock_t start = clock();
+
 	int index = loadFile("cataluna.csv", nList);
+
+	printf("Time spent for loading data: %0.3f\n", (double)(clock() - start) / CLOCKS_PER_SEC);
 
 	//Test
 	/*
@@ -25,7 +30,7 @@ int main(int argc, char* argv[]){
 	}
 	*/
 	
-	
+	/*
 	printf("Testing...\n");
 	
 	char way[] = "way|61943433|Carrer de Santa Clara||living_street||||20|771979683|772184663|772163132";
@@ -34,7 +39,6 @@ int main(int argc, char* argv[]){
 	printf("\n");
 	readWay(way2, nList, index);
 	
-
 	printf("Fail bs: %li\n", bs(nList, 11, index));
 
 	
@@ -50,8 +54,20 @@ int main(int argc, char* argv[]){
 
 	printf("Priting neighbors of node 0 ...\n");
 	//printf("node:  771979683: %li, %li \n", bs(nList, 771979683, index), nList[bs(nList, 771979683, index)]->realId);
-	for(i=0;i<nList[bs(nList, 772141890, index)]->tn; i++)printf("%li, ",nList[nList[bs(nList, 772141890, index)]->neighbors[i]]->realId);
+	for(i=0;i<nList[bs(nList, 771979683, index)]->tn; i++)printf("%li, ",nList[nList[bs(nList, 771979683, index)]->neighbors[i]]->realId);
 	printf("\n");
+	*/
+
+	
+	int path[10];
+	path[0] = 0;
+	path[1] = 5;
+	path[2] = 10;
+	printf("Entre 0 i 1: %f\n", h(nList[path[0]], nList[path[1]]));
+	printf("Entre 1 i 2: %f\n", h(nList[path[1]], nList[path[2]]));
+	printf("total: %f\n", g(nList, path, 3));
+
+	
 
 	printf("Heuristic function: %f\n", 	112.12*1000*h(nList[0], nList[50]));
 	
