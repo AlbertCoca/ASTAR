@@ -16,12 +16,6 @@ typedef struct{
 	long tn;
 }node;
 
-typedef{
-	int n;
-	int i;
-	int *list;
-}dList;
-
 
 int findIndexOfChar(char* s, char c, int n);
 node* readNode(char *line);

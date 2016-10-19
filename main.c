@@ -16,13 +16,13 @@ int main(int argc, char* argv[]){
 
 	clock_t start = clock();
 
-	int index = loadFile("cataluna.csv", nList);
+	int nodes_n = loadFile("cataluna.csv", nList);
 
 	printf("Time spent for loading data: %0.3f\n", (double)(clock() - start) / CLOCKS_PER_SEC);
 
 	//Test
 	/*
-	for (i = 0; i < index; ++i)
+	for (i = 0; i < nodes_n; ++i)
 	{
 		if(nList[i]->id != i){
 			printf("i: %d, realId: %li, id: %li\n", i, nList[i]->realId, nList[i]->id);
@@ -35,26 +35,26 @@ int main(int argc, char* argv[]){
 	
 	char way[] = "way|61943433|Carrer de Santa Clara||living_street||||20|771979683|772184663|772163132";
 	char way2[] = "way|61946122|Carrer de Santa Clara||living_street|||oneway|20|771979683|772141890";
-	readWay(way, nList, index);
+	readWay(way, nList, nodes_n);
 	printf("\n");
-	readWay(way2, nList, index);
+	readWay(way2, nList, nodes_n);
 	
-	printf("Fail bs: %li\n", bs(nList, 11, index));
+	printf("Fail bs: %li\n", bs(nList, 11, nodes_n));
 
 	
 	node *nFound;
-	int indexFound = 0;
+	int nodes_nFound = 0;
 	printf("Initial Node: %li\n", nList[2]->realId);
-	indexFound = bs(nList, nList[2]->realId, index);
-	nFound = nList[indexFound];
+	nodes_nFound = bs(nList, nList[2]->realId, nodes_n);
+	nFound = nList[nodes_nFound];
 	if(nFound != NULL)
 		printf("Found Node: %li\n", nFound->realId);
 
-	printf("index: %d\n",findIndexOfChar("hola", 'c', 1));
+	printf("nodes_n: %d\n",findnodes_nOfChar("hola", 'c', 1));
 
 	printf("Priting neighbors of node 0 ...\n");
-	//printf("node:  771979683: %li, %li \n", bs(nList, 771979683, index), nList[bs(nList, 771979683, index)]->realId);
-	for(i=0;i<nList[bs(nList, 771979683, index)]->tn; i++)printf("%li, ",nList[nList[bs(nList, 771979683, index)]->neighbors[i]]->realId);
+	//printf("node:  771979683: %li, %li \n", bs(nList, 771979683, nodes_n), nList[bs(nList, 771979683, nodes_n)]->realId);
+	for(i=0;i<nList[bs(nList, 771979683, nodes_n)]->tn; i++)printf("%li, ",nList[nList[bs(nList, 771979683, nodes_n)]->neighbors[i]]->realId);
 	printf("\n");
 	*/
 
@@ -66,6 +66,9 @@ int main(int argc, char* argv[]){
 	printf("Entre 0 i 1: %f\n", h(nList[path[0]], nList[path[1]]));
 	printf("Entre 1 i 2: %f\n", h(nList[path[1]], nList[path[2]]));
 	printf("total: %f\n", g(nList, path, 3));
+
+	//astar(1, 5, nodes_n, nList);
+	printf("Return ASTAR: %d\n", astar(0, 1, nodes_n, nList));
 
 	
 
