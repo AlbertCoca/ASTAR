@@ -67,10 +67,26 @@ int main(int argc, char* argv[]){
 	printf("Entre 1 i 2: %f\n", h(nList[path[1]], nList[path[2]]));
 	printf("total: %f\n", g(nList, path, 3));
 
-	//astar(1, 5, nodes_n, nList);
-	printf("Return ASTAR: %d\n", astar(0, 1, nodes_n, nList));
+	nodeList *l = astar(1, 5, nodes_n, nList);
+	printf("ASTAR Solution!\n");
+	listPrint(l);
 
 	
+	//Dynamic list test
+	printf("Testing List..\n");
+	
+	/*
+	for(i=0; i<200; i++){
+		printf("%d\n", i);
+		listAdd(list, i);
+	}
+	listPrint(list);
+	for(i=0; i<200; i++){
+		printf("%d\n", i);
+		listRemoveItem(list, i+1);
+	}
+	listPrint(list);
+	*/
 
 	printf("Heuristic function: %f\n", 	112.12*1000*h(nList[0], nList[50]));
 	

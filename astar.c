@@ -25,7 +25,7 @@ void expandNode(node **nList, int n, int open){
 	}
 }
 
-int astar(int initNode, int endNode, int n, node **nList){
+nodeList* astar(int initNode, int endNode, int n, node **nList){
 	nodeList* closedSet;
 	nodeList* openSet;
 	int *cameFrom;
@@ -61,12 +61,16 @@ int astar(int initNode, int endNode, int n, node **nList){
 	while(openSet->n > 0){
 		//Get the nomes with the lowest value in fScore
 		printf("Fiding the minium...\n");
-		int current = findMin(fScore, n);
+		listPrint(openSet);
+		int current = findMin(fScore, n, openSet);
 		//Returning the path
-		if(current == endNode)return 1;
+		if(current == endNode) return reconstructPath(cameFrom, current, initNode);
 		//Remove the current node from the open list and add it to the close list
 		printf("Removing and adding to lists...\n");
-		listRemoveItem(openSet, openSet->list[current]);
+		printf("Removing %d \n", current);
+		listPrint(openSet);
+		listRemoveItem(openSet, current);
+		printf("Adding %d \n", current);
 		listAdd(closedSet, current);
 
 		node *curr = nList[current];
@@ -100,7 +104,7 @@ int astar(int initNode, int endNode, int n, node **nList){
 		}
 		
 	}
-	return 0;
+	return NULL;
 }
 
 nodeList* listInit(){
@@ -118,16 +122,21 @@ void listAdd(nodeList* list, int id){
 		list->n+=1;
 	}
 	else{
+		printf("Reallocating the size of the list...\n");
 		list->list = (int *) realloc(list->list, sizeof(int)*REALLOC_SIZE);
 		list->size+=REALLOC_SIZE;
 		listAdd(list, id);
 	}
 }
 
-void listRemoveItem(nodeList *list, int id){
+int listRemoveItem(nodeList *list, int id){
 	if(list->n > 1){
 		qsort(list->list, list->n, sizeof(int), cmpfunc);
 		int *item = (int*) bsearch (&id, list->list, list->n, sizeof(int), cmpfunc);
+		if(item == NULL){
+			printf("Item not in list!\n");
+			return 0;
+		}
 		list->list[item - list->list] = list->list[list->n-1];
 		list->n-=1;
 	}
@@ -143,12 +152,13 @@ void listPrint(nodeList *list){
 }
 
 //TODO: fast minium search
-int findMin(double* fScore, int n){
+int findMin(double* fScore, int n, nodeList *openSet){
 	int i;
-	int min = 0;
-	for(i=0; i<n; i++){
-		if(fScore[i] >= 0 && fScore[i] < fScore[min]){
-			min = i;
+	int min = openSet->list[0];
+	for(i=0; i<openSet->n; i++){
+
+		if(fScore[openSet->list[i]] >= 0 && fScore[openSet->list[i]] < fScore[min]){
+			min = openSet->list[i];
 		}
 	}
 	return min;
@@ -159,4 +169,16 @@ int cmpfunc(const void * a, const void * b)
 	int aa = *(int*)a;
 	int bb = *(int*)b;
 	return ( aa - bb );
+}
+
+nodeList* reconstructPath(int* cameFrom, int endNode, int initialnode){
+	nodeList* path;
+	path = listInit();
+	listAdd(path, endNode);
+	int current = endNode;
+	while(initialnode != current){
+		listAdd(path, cameFrom[current]);
+		current = cameFrom[current];
+	}
+	return path;
 }
