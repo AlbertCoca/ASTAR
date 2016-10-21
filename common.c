@@ -12,8 +12,8 @@ int findIndexOfChar(char* s, char c, int n){
 
 long bs(node **nList, int fItem, int len){
 	int low = 0;
-	int high = len;
-	int i = len/2;
+	int high = len + 1;
+	int i = (len+1)/2;
 	node *n_Act;
 	while(low <= high && nList[i]->realId != fItem){
 		if(fItem > nList[i]->realId) low = i+1;

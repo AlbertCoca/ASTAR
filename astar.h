@@ -1,22 +1,23 @@
 #include "input.h"
 #include <math.h>
 
-#define REALLOC_SIZE 100
+#define REALLOC_SIZE 100000
 
 typedef struct{
-	int size;
-	int n;
-	int *list;
+	long size;
+	long n;
+	long *list;
 }nodeList;
 
 double h(node *n1, node *n2);
-double g(node **nList, int *path, int len);
+double g(node **nList, long *path, long len);
 double pDistance(node *n1, node *n2);
-nodeList* astar(int initNode, int endNode, int n, node **nList);
+nodeList* astar(long initNode, long endNode, long n, node **nList);
 nodeList* listInit();
-void listAdd(nodeList* list, int id);
-int findMin(double* fScore, int n, nodeList *openSet);
-int listRemoveItem(nodeList *list, int id);
+void listAdd(nodeList* list, long id);
+long findMin(double* fScore, long n, nodeList *openSet);
+int listRemoveItem(nodeList *list, long id);
 void listPrint(nodeList *list);
 int cmpfunc(const void * a, const void * b);
-nodeList* reconstructPath(int* cameFrom, int endNode, int initialnode);
+nodeList* reconstructPath(long* cameFrom, long endNode, long initialnode);
+void listPrintReal(nodeList *list, node** nList);

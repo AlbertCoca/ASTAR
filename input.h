@@ -3,7 +3,7 @@
 #include <string.h>
 
 #define MAX_LINE_LEN 79857
-#define NODE_MAX 23895681
+#define NODE_MAX 23895681 
 #define LINE_MAX 1417363
 
 typedef struct{
@@ -17,8 +17,9 @@ typedef struct{
 }node;
 
 
+long loadFile(char *name, node **nList);
 int findIndexOfChar(char* s, char c, int n);
 node* readNode(char *line);
-void classifyLine(char *line, node **nList, int *i);
-void readWay(char *line, node **nList, int n);
+void classifyLine(char *line, node **nList, long *i);
+void readWay(char *line, node **nList, long n);
 void nodeInitialize(node *n);

@@ -2,9 +2,9 @@
 
 //TODO make a function for cut string from index a to b
 
-int loadFile(char *name, node **nList){
+long loadFile(char *name, node **nList){
 
-	int index = 0;
+	long index = 0;
 	FILE *fp;
 	char line[MAX_LINE_LEN];
 	printf("Opening File...\n");
@@ -59,7 +59,7 @@ node* readNode(char *line){
 	return n;
 }
 
-void readWay(char *line, node **nList, int n){
+void readWay(char *line, node **nList, long n){
 	int i = 9;
 	int start=0, end=0;
 	char id[10];
@@ -106,12 +106,11 @@ void readWay(char *line, node **nList, int n){
 		i++;
 	}
 	start = findIndexOfChar(line, '|', i) + 1;
-	end = findIndexOfChar(line, '\0', 1);
+	end = strlen(line);
 	strncpy(id, line + start, end - start);
 	node2 = bs(nList, atoi(id), n);
-	if(node2 != -1){
+	if(node2 >= 0 ){
 		if(ow==1){
-				printf("oneway!!!\n");
 				nList[node1]->neighbors[nList[node1]->tn] = node2;
 				nList[node1]->tn+=1;
 			}
@@ -124,7 +123,7 @@ void readWay(char *line, node **nList, int n){
 	}
 }
 
-void classifyLine(char *line, node **nList, int *i){
+void classifyLine(char *line, node **nList, long *i){
 
 	switch(line[0]){
 		case 'n':
