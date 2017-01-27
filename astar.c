@@ -53,15 +53,20 @@ nodeList* astar(long initNode, long endNode, long n, node **nList){
 		//Get the nomes with the lowest value in fScore
 		long current = findMin(fScore, n, openSet);
 		//Returning the path
-		if(current == endNode) return reconstructPath(cameFrom, current, initNode);
+		if(current == endNode){
+				free(fScore);
+				free(gScore);
+			return reconstructPath(cameFrom, current, initNode);
+		}
 		//Remove the current node from the open list and add it to the close list
 		listRemoveItem(openSet, current);
-		listAdd(closedSet, current);
+		//listAdd(closedSet, current);
+		nList[current]->closed = 1;
 
 		node *curr = nList[current];
 		//Sorting the lists for a faster search
 		qsort(openSet->list, openSet->n, sizeof(long), cmpfunc);
-		qsort(closedSet->list, closedSet->n, sizeof(long), cmpfunc);
+		//qsort(closedSet->list, closedSet->n, sizeof(long), cmpfunc);
 		
 		/*
 		printf("openset: ");
@@ -71,8 +76,9 @@ nodeList* astar(long initNode, long endNode, long n, node **nList){
 		*/
 
 		for(i=0; i < curr->tn; i++){
-			//For each neighbor we look if it is in the close list, if it's not the next neighbor
-			if(bsearch(&curr->neighbors[i], closedSet->list, closedSet->n, sizeof(long), cmpfunc)==NULL){
+			//For each neighbor we look if it is in the close list, if it's not then next neighbor
+			//if(bsearch(&curr->neighbors[i], closedSet->list, closedSet->n, sizeof(long), cmpfunc)==NULL){
+			if(nList[curr->neighbors[i]]->closed == 0){
 				double tentative_gScore = gScore[curr->id] + pDistance(curr, nList[curr->neighbors[i]]);
 
 				//if this neighbor is not in the openset then its a new node.
@@ -95,6 +101,9 @@ nodeList* astar(long initNode, long endNode, long n, node **nList){
 		
 	}
 	printf("Number of expanded nodes: %li\n", closedSet->n);
+	free(cameFrom);
+	free(fScore);
+	free(gScore);
 	return NULL;
 }
 
@@ -165,12 +174,7 @@ long findMin(double* fScore, long n, nodeList *openSet){
 
 int cmpfunc(const void * a, const void * b)
 {
-	long aa = *(long*)a;
-	long bb = *(long*)b;
-	if(aa > bb)return 1;
-	if(aa == bb)return 0;
-	else return -1;
-	//return ( aa - bb );
+	return ( *(long*)a - *(long*)b );
 }
 
 nodeList* reconstructPath(long* cameFrom, long endNode, long initialnode){
@@ -182,5 +186,6 @@ nodeList* reconstructPath(long* cameFrom, long endNode, long initialnode){
 		listAdd(path, cameFrom[current]);
 		current = cameFrom[current];
 	}
+	free(cameFrom);
 	return path;
 }

@@ -15,7 +15,7 @@ int main(int argc, char* argv[]){
 
 	clock_t start = clock();
 
-	long nodes_n = loadFile("cataluna.csv", nList);
+	long nodes_n = loadFile("spain.csv", nList);
 
 	printf("Time spent for loading data: %0.3f\n", (double)(clock() - start) / CLOCKS_PER_SEC);
 
@@ -29,7 +29,11 @@ int main(int argc, char* argv[]){
 
 	printf("ASTAR Solution!\n");
 	if(l==NULL)printf("No Solution!\n");
-	else listPrint(l);
+	else listPrintReal(l, nList);
+	for(i=0; i<NODE_MAX; i++){
+		free(nList[i]);
+	}
+	free(nList);
 	
 	return 0;
 }

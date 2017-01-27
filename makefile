@@ -6,9 +6,9 @@ main.o: main.c
 input.o: input.c
 	gcc -c input.c -g -lm
 common.o: common.c
-	gcc -c common.c -g -lm
+	gcc -O3 -c common.c -g -lm
 astar.o: astar.c
-	gcc -c astar.c -g -lm
+	gcc -O3 -c astar.c -g -lm
 test.o: test.c
 	gcc -c test.c -g -lm
 

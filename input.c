@@ -26,6 +26,7 @@ long loadFile(char *name, node **nList){
 node* readNode(char *line){
 
 	node *n = malloc(sizeof(node));
+	n->closed = 0;
 
 	char check[5] = {'\0'};
 	strncpy(check, line, 4);
@@ -37,7 +38,7 @@ node* readNode(char *line){
 		int start = findIndexOfChar(line, '|', 1) + 1;
 		int end = findIndexOfChar(line, '|', 2);
 		strncpy(id, line + start, end - start);
-		n->realId = atoi(id);
+		n->realId = atol(id);
 
 		char lat[20] = {'\0'};
 		start = findIndexOfChar(line, '|', 9) + 1;
@@ -61,18 +62,25 @@ node* readNode(char *line){
 
 void readWay(char *line, node **nList, long n){
 	int i = 9;
-	int start=0, end=0;
+	int start=0, end=-1;
 	char id[10];
 	char oneWay[6];
 	memset( id, '\0', sizeof(char)*10 );
 	memset( oneWay, '\0', sizeof(char)*6 );
 	int ow = 0;
-	long node1, node2;
-	start = findIndexOfChar(line, '|', i) + 1;
+	long node1=-1, node2;
+
 	end = findIndexOfChar(line, '|', i+1);
-	strncpy(id, line + start, end - start);
-	node1 = bs(nList, atoi(id), n);
-	i++;
+	if (end == -1) return;
+	while(node1 < 0 && end >= 0){
+		memset( id, '\0', sizeof(char)*10 );
+		start = findIndexOfChar(line, '|', i) + 1;
+		strncpy(id, line + start, end - start);
+		//printf("id: %li\n", atol(id));
+		node1 = bs(nList, atol(id), n);
+		i++;
+		end = findIndexOfChar(line, '|', i+1);
+	}
 
 	start = findIndexOfChar(line, '|', 7) + 1;
 	end = findIndexOfChar(line, '|', 8);
@@ -87,8 +95,6 @@ void readWay(char *line, node **nList, long n){
 		end = findIndexOfChar(line, '|', i+1);
 		strncpy(id, line + start, end - start);
 		node2 = bs(nList, atol(id), n);
-		//printf("node1: %li\n", node1);
-		//printf("node2: %li\n", node2);
 		if(node2 >= 0 ){
 			if(ow==1){
 				//printf("oneway!!!\n");
@@ -108,8 +114,8 @@ void readWay(char *line, node **nList, long n){
 	start = findIndexOfChar(line, '|', i) + 1;
 	end = strlen(line);
 	strncpy(id, line + start, end - start);
-	node2 = bs(nList, atoi(id), n);
-	if(node2 >= 0 ){
+	node2 = bs(nList, atol(id), n);
+	if(node2 >= 0 && node1 >= 0){
 		if(ow==1){
 				nList[node1]->neighbors[nList[node1]->tn] = node2;
 				nList[node1]->tn+=1;
@@ -144,4 +150,22 @@ void classifyLine(char *line, node **nList, long *i){
 
 void nodeInitialize(node *n){
 	n = (node*)malloc(sizeof(node));
+	n->closed = 0;
+}
+
+long bs(node **nList, int fItem, int len){
+	int low = 0;
+	int high = len + 1;
+	int i = (len+1)/2;
+	while(low <= high && nList[i]->realId != fItem){
+		if(fItem > nList[i]->realId) low = i+1;
+		else high = i - 1;
+		i = (low+high) / 2;
+	}
+	//printf("i: %d\n", i);
+	if(low > high){
+		return -1;
+	}
+	return nList[i]->id;
+	
 }

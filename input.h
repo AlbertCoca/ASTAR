@@ -14,6 +14,7 @@ typedef struct{
 	double lat;
 	long neighbors[20];
 	long tn;
+	int closed;
 }node;
 
 
@@ -23,3 +24,4 @@ node* readNode(char *line);
 void classifyLine(char *line, node **nList, long *i);
 void readWay(char *line, node **nList, long n);
 void nodeInitialize(node *n);
+long bs(node **nList, int fItem, int len);
